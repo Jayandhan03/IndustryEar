@@ -1,0 +1,19 @@
+.vscode
+.env
+__pycache__/
+.ipynb_checkpoints   
+.DS_Store
+*.pyc   
+.vscode/
+.idea/
+*.log
+.env
+.venv/
+env/
+venv/
+env.bak/        
+venv.bak/
+# Jupyter Notebook Checkpoints
+.ipynb_checkpoints
+# VSCode settings
+.settings/

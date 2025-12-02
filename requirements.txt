@@ -1,0 +1,8 @@
+langchain_google_genai
+langchain
+langgraph 
+langchain-community 
+langchain-openai 
+duckduckgo-search
+pyttsx3
+gtts
