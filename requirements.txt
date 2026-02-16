@@ -6,3 +6,8 @@ langchain-openai
 duckduckgo-search
 pyttsx3
 gtts
+langchain_tavily
+streamlit
+langchain-groq
+python-dotenv
+langchain-xai

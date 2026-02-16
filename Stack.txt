@@ -1,0 +1,15 @@
+Frontend:
+Next.js + TypeScript
+Tailwind + shadcn/ui
+Framer Motion
+
+Backend:
+FastAPI (Python)
+PostgreSQL
+Redis (optional)
+
+Design:
+Minimal
+Dark mode
+AI-first
+Zero clutter
