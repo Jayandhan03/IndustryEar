@@ -30,7 +30,7 @@ def read_root():
 async def generate_news(data: NewsRequest):
     try:
         # Pass topic into your agent if needed
-        result = agent()  
+        result = agent(topic=data.topic)  
         # If your agent does NOT accept topic, use: result = agent()
 
         return {

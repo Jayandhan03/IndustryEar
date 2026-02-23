@@ -1,21 +1,15 @@
-from langchain.chat_models import init_chat_model
-from langchain_tavily import TavilySearch
-from langgraph.checkpoint.memory import MemorySaver
-from langchain.agents import create_agent
-from langchain_core.prompts import ChatPromptTemplate
-from langchain.agents import create_agent
-from langchain_tavily import TavilySearch
-from langchain.agents import create_agent
-from .llm import llm_model
 import re
-
+from langchain.agents import create_agent
+from langchain_tavily import TavilySearch
+from .llm import llm_model
+from news import fetch_news
 
 def clean_text(text: str) -> str:
     """
     Fix broken spacing like: 8 0 M i l l i o n -> 80 Million
     """
-    # remove spaces between single characters
-    text = re.sub(r'(?<=\w)\s(?=\w)', '', text)
+    # remove spaces between single characters only if there are multiple in a row (e.g., "8 0 M i l l i o n")
+    text = re.sub(r'(?<=\b\w)\s(?=\w\b)', '', text)
 
     # normalize newlines
     text = re.sub(r'\n{3,}', '\n\n', text)
@@ -23,7 +17,14 @@ def clean_text(text: str) -> str:
     return text.strip()
 
 
-def agent():
+def agent(topic: str = "How solo entrepreneurs use AI to become multimillionaires"):
+
+    # 1. Fetch fresh news from RapidAPI
+    news_data = fetch_news(query=topic, limit=3)
+    news_context = ""
+    if news_data and "data" in news_data:
+        for article in news_data["data"]:
+            news_context += f"- {article.get('title')}: {article.get('link')}\n"
 
     search = TavilySearch(max_results=2)
 
@@ -33,8 +34,9 @@ def agent():
     )
 
     task_input = (
-        "Find the latest news about how solo entrepreneurs use AI to become multimillionaires. "
-        "Summarize in clear bullet points."
+        f"Find the latest news about {topic}. "
+        f"Here is some initial news context to consider:\n{news_context}\n"
+        "Summarize the most important findings in clear bullet points."
     )
 
     response = agent_executor.invoke(
@@ -64,8 +66,6 @@ def agent():
     return clean_text(final_text)
 
 
-
 if __name__ == "__main__":
-
     result = agent()
-    print(result)   
+    print(result)

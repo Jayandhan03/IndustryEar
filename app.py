@@ -18,7 +18,7 @@ query = st.text_input(
 if st.button("Generate News 🚀"):
 
     with st.spinner("Searching the web and summarizing..."):
-        result = agent()   # ✅ this is already a STRING
+        result = agent(topic=query)   # ✅ this is already a STRING
 
     if result and isinstance(result, str):
         st.success("Done")
