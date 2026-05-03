@@ -1,13 +1,18 @@
-langchain_google_genai
-langchain
-langgraph 
-langchain-community 
-langchain-openai 
-duckduckgo-search
-pyttsx3
-gtts
-langchain_tavily
-streamlit
-langchain-groq
+# ── Core Framework ──
+fastapi
+uvicorn[standard]
+pydantic-settings
 python-dotenv
+
+# ── LLM & Agents ──
+langchain
 langchain-xai
+langchain-community
+langchain_tavily
+langgraph
+
+# ── TTS ──
+gtts
+
+# ── HTTP Client ──
+requests

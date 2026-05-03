@@ -1,19 +1,30 @@
-.vscode
-.env
+# ── Python ──
 __pycache__/
-.ipynb_checkpoints   
-.DS_Store
-*.pyc   
+*.pyc
+*.pyo
+
+# ── Virtual environments ──
+.venv/
+venv/
+env/
+
+# ── Secrets ──
+.env
+
+# ── IDE ──
 .vscode/
 .idea/
-*.log
-.env
-.venv/
-env/
-venv/
-env.bak/        
-venv.bak/
-# Jupyter Notebook Checkpoints
-.ipynb_checkpoints
-# VSCode settings
 .settings/
+
+# ── OS ──
+.DS_Store
+Thumbs.db
+
+# ── Jupyter ──
+.ipynb_checkpoints/
+
+# ── Logs ──
+*.log
+
+# ── Generated media ──
+*.mp3
