@@ -5,7 +5,7 @@ All routes are prefixed with /api/v1 via the main router.
 
 import logging
 
-from fastapi import APIRouter, HTTPException
+from fastapi import APIRouter, File, Form, HTTPException, UploadFile
 from fastapi.responses import StreamingResponse
 
 from app.models.schemas import (
@@ -15,10 +15,12 @@ from app.models.schemas import (
     NewsResponse,
     SummarizeRequest,
     SummarizeResponse,
+    TelegramStatusResponse,
 )
 from app.services.audio_service import generate_audio_stream
 from app.services.llm_service import run_agent, summarize_news
 from app.services.news_service import fetch_news
+from app.services.telegram_service import get_connection, send_audio_to_user
 
 logger = logging.getLogger(__name__)
 
@@ -151,3 +153,63 @@ async def news_audio_endpoint(data: AudioRequest):
     except Exception as e:
         logger.error("POST /audio/news TTS error: %s", e)
         raise HTTPException(status_code=500, detail=f"TTS generation failed: {e}")
+
+
+# ── Telegram ────────────────────────────────────────────────────
+
+@router.get(
+    "/telegram/status/{token}",
+    response_model=TelegramStatusResponse,
+    tags=["Telegram"],
+    summary="Check if a user token has a linked Telegram account",
+)
+async def telegram_status(token: str):
+    """
+    Returns whether the given user_token has been linked to a Telegram
+    account via the bot's /start command.
+    """
+    conn = get_connection(token)
+    if conn is None:
+        return TelegramStatusResponse(connected=False)
+    return TelegramStatusResponse(
+        connected=True,
+        username=conn.get("username"),
+        first_name=conn.get("first_name"),
+    )
+
+
+@router.post(
+    "/telegram/send-audio",
+    tags=["Telegram"],
+    summary="Send an audio file to a connected Telegram user",
+)
+async def telegram_send_audio(
+    audio: UploadFile = File(..., description="MP3 audio file"),
+    user_token: str = Form(..., description="User token linked via /start"),
+    topic: str = Form(default="News Briefing", description="Topic for the caption"),
+):
+    """
+    Sends the uploaded audio file to the Telegram user linked to `user_token`.
+    The bot must have been connected via /start first.
+    """
+    try:
+        audio_bytes = await audio.read()
+        if not audio_bytes:
+            raise HTTPException(status_code=422, detail="Empty audio file.")
+
+        filename = audio.filename or f"{topic.replace(' ', '_')[:40]}_news.mp3"
+        caption = f"🎙 Your audio briefing: {topic}"
+
+        result = send_audio_to_user(
+            token=user_token,
+            audio_bytes=audio_bytes,
+            filename=filename,
+            caption=caption,
+        )
+        return result
+
+    except ValueError as ve:
+        raise HTTPException(status_code=422, detail=str(ve))
+    except Exception as e:
+        logger.error("POST /telegram/send-audio error: %s", e)
+        raise HTTPException(status_code=500, detail=f"Failed to send audio: {e}")

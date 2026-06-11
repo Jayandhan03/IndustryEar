@@ -56,3 +56,10 @@ class SummarizeResponse(BaseModel):
     article_count: int | None = None
     summary: str | None = None
     error: str | None = None
+
+
+class TelegramStatusResponse(BaseModel):
+    connected: bool
+    username: str | None = None
+    first_name: str | None = None
+

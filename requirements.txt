@@ -16,3 +16,6 @@ gtts
 
 # ── HTTP Client ──
 requests
+
+# ── File Upload Support ──
+python-multipart

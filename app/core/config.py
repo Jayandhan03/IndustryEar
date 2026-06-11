@@ -8,7 +8,7 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-
+ 
 class Settings:
     """Application settings loaded from environment variables."""
 
@@ -27,6 +27,9 @@ class Settings:
     # --- Search ---
     TAVILY_API_KEY: str = os.getenv("TAVILY_API_KEY", "")
     SERP_API_KEY: str = os.getenv("SERP_API_KEY", "")
+
+    # ---Telegram ---
+    TELEGRAM_BOT_TOKEN: str = os.getenv("TELEGRAM_BOT_TOKEN", "")
 
     # --- CORS ---
     ALLOWED_ORIGINS: list[str] = os.getenv(
