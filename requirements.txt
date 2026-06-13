@@ -1,13 +1,10 @@
 # ── Core Framework ──
 fastapi
 uvicorn[standard]
-pydantic-settings
 python-dotenv
 
 # ── LLM & Agents ──
-langchain
 langchain-xai
-langchain-community
 langchain_tavily
 langgraph
 
