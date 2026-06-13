@@ -8,12 +8,10 @@ from pydantic import BaseModel, Field
 # ── Request Schemas ──────────────────────────────────────────────
 
 class NewsRequest(BaseModel):
-    """Request body for /api/v1/news/generate"""
     topic: str = Field(..., min_length=1, description="Search topic")
 
 
 class SummarizeRequest(BaseModel):
-    """Request body for /api/v1/news/summarize"""
     topic: str = Field(..., min_length=1, description="Search topic")
     limit: int = Field(default=5, ge=1, le=20, description="Number of articles to fetch")
     time_published: str = Field(
@@ -23,10 +21,6 @@ class SummarizeRequest(BaseModel):
 
 
 class AudioRequest(SummarizeRequest):
-    """
-    Request body for /api/v1/audio/news
-    Inherits topic, limit, and time_published from SummarizeRequest.
-    """
     voice_id: str = Field(
         default="JBFqnCBsd6RMkjVDRZzb",
         description="ElevenLabs voice ID (default: George — news anchor)",
@@ -56,10 +50,3 @@ class SummarizeResponse(BaseModel):
     article_count: int | None = None
     summary: str | None = None
     error: str | None = None
-
-
-class TelegramStatusResponse(BaseModel):
-    connected: bool
-    username: str | None = None
-    first_name: str | None = None
-
