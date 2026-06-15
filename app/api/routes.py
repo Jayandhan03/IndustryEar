@@ -142,7 +142,7 @@ async def news_audio_endpoint(data: AudioRequest):
 )
 async def telegram_send_audio(
     audio: UploadFile = File(..., description="MP3 audio file"),
-    chat_id: str = Form(..., description="Telegram chat ID from Login Widget"),
+    chat_id: str = Form(..., description="Telegram chat ID (captured when the user links the bot)"),
     topic: str = Form(default="News Briefing", description="Topic for the caption"),
 ):
     try:

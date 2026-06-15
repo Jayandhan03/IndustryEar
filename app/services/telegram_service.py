@@ -1,7 +1,7 @@
 """
 Telegram Bot service — sends audio files to users via the Bot API.
-Connection linking is handled by the Telegram Login Widget on the frontend;
-this service only handles outbound audio delivery.
+Account linking (chat_id capture) is handled by the bot deep-link + webhook
+flow in the Next.js app; this service only handles outbound audio delivery.
 """
 
 import io
@@ -24,7 +24,7 @@ def send_audio_to_user(
     Send an MP3 audio file to a Telegram user by chat_id.
 
     Args:
-        chat_id: Telegram user/chat ID (obtained via Login Widget).
+        chat_id: Telegram user/chat ID (captured when the user links the bot).
         audio_bytes: Raw MP3 bytes.
         filename: Filename for the attachment.
         caption: Optional caption sent with the audio.
