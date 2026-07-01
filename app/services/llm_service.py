@@ -38,6 +38,11 @@ def _require_llm() -> ChatXAI:
     return _llm_model
 
 
+def get_llm() -> ChatXAI:
+    """Public accessor for the shared Grok LLM instance."""
+    return _require_llm()
+
+
 # ── Helpers ──────────────────────────────────────────────────────
 
 def clean_text(text: str) -> str:

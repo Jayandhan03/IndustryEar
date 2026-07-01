@@ -31,6 +31,16 @@ class Settings:
     # ---Telegram ---
     TELEGRAM_BOT_TOKEN: str = os.getenv("TELEGRAM_BOT_TOKEN", "")
 
+    # --- Database (shared with the YourNews Next.js app) ---
+    MONGODB_URI: str = os.getenv("MONGODB_URI", "")
+    MONGODB_DB: str = os.getenv("MONGODB_DB", "yournews")
+
+    # --- Scheduler ---
+    # In-process APScheduler that delivers scheduled audio briefings.
+    SCHEDULER_ENABLED: bool = os.getenv("SCHEDULER_ENABLED", "true").lower() == "true"
+    # How often (seconds) the scheduler wakes up to look for due deliveries.
+    SCHEDULER_TICK_SECONDS: int = int(os.getenv("SCHEDULER_TICK_SECONDS", "60"))
+
     # --- CORS ---
     ALLOWED_ORIGINS: list[str] = os.getenv(
         "ALLOWED_ORIGINS", "http://localhost:3000"

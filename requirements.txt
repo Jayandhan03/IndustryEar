@@ -15,4 +15,10 @@ gtts
 requests
 
 # ── File Upload Support ──
-python-multipart
+python-multipart
+
+# ── Database (shared MongoDB with the Next.js app) ──
+pymongo[srv]
+
+# ── Scheduler ──
+apscheduler
